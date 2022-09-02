@@ -1,38 +1,56 @@
-.App {
+body {
+  max-width: 900px;
+  display: block;
+  margin-left: 40 px;
+}
+h3 {
+  padding-bottom: auto;
+}
+.row {
+  display: block;
   text-align: center;
+  margin: 40px 0 30px 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+span {
+  display: block;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  margin-left: 3rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.col-2 {
+  text-align: left;
+  margin-left: 4rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.col-5 {
+  text-align: center;
+  /* margin-left: 3rem; */
 }
 
-.App-link {
-  color: #61dafb;
+#description::first-letter {
+  text-transform: capitalize;
 }
 
-@keyframes App-logo-spin {
+#humidity,
+#description {
+  font-size: 23px;
+}
+#wind-f {
+  font-size: 15px;
+}
+
+#forecast {
+  margin-top: 60px;
+  font-size: 18px;
+  color: rgb(33, 33, 33);
+}
+
+/* @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
   }
-}
+} */
