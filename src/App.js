@@ -1,13 +1,71 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
+import React, { useState } from "react";
 
-function App() {
+function App(props) {
+  let [city, setCity] = useState(null);
+  let [temperature, setTemperature] = useState(null);
+  let [description, setDescription] = useState(null);
+  let [humidity, setHumidity] = useState(null);
+  let [wind, setWind] = useState(null);
+  let [correctcity, setCorrectcity] = useState(null);
+  let [country, setCountry] = useState(null);
+  let [icon, setIcon] = useState(null);
+
+  function getPosition() {
+    navigator.geolocation.getCurrentPosition(currentPosition);
+  }
+
+  function currentPosition(position) {
+    let lat = position.coords.latitude;
+    let lon = position.coords.longitude;
+    axios
+      .get(`${apiUrl}lat=${lat}&lon=${lon}&appid=${apiKey}&units=${units}`)
+      .then(showTemperature);
+  }
+
+  function getCity(event) {
+    setCity(event.target.value);
+  }
+
+  if (!city) {
+    getPosition();
+  }
+
+  function searchWeather(event) {
+    event.preventDefault();
+  }
+
+  function showTemperature(response) {
+    console.log(response.data);
+    setTemperature(response.data.main.temp);
+    setDescription(response.data.weather[0].description);
+    setHumidity(response.data.main.humidity);
+    setWind(response.data.wind.speed);
+    setCorrectcity(response.data.name);
+    setCountry(response.data.sys.country);
+    setIcon(response.data.weather[0].icon);
+  }
+  let img = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+  let apiKey = "7ed20b3871d9e4f3837ef60fa128bf28";
+  let apiUrl = "https://api.openweathermap.org/data/2.5/weather?";
+  let apiUrlForecast = "https://api.openweathermap.org/data/2.5/onecall?";
+  let units = "metric";
+
+  axios
+    .get(`${apiUrl}q=${city}&appid=${apiKey}&units=${units}`)
+    .then(showTemperature);
   return (
     <div className="App">
       <div class="border m-5 p-5 rounded shadow p-3 mb-5 bg-body rounded">
         <div class="row">
           <div class="col-6 mx-5">
-            <div class="input-group mb-3" id="search-city">
+            <div
+              class="input-group mb-3"
+              id="search-city"
+              onSubmit={searchWeather}
+            >
               <input
                 type="search"
                 id="city-to-search"
@@ -15,6 +73,7 @@ function App() {
                 placeholder="Enter your city here"
                 aria-label="Search"
                 aria-describedby="basic-addon2"
+                onChange={getCity}
               />
               <button
                 type="button"
@@ -68,18 +127,17 @@ function App() {
           <div class="container">
             <div class="row">
               <div class="col-5" name="temp-today">
-                <div id="temper">25°C</div>
-                <div id="wind">Wind: 20 m/s</div>
-                <div id="humidity">Humidity: 80%</div>
-                <div id="description">Feeling: cloudy</div>
+                <div id="temper">{Math.round(temperature)}°C</div>
+                <div id="wind">Wind: {wind} m/s</div>
+                <div id="humidity">Humidity: {humidity} %</div>
+                <div id="description">Feeling: {description}</div>
               </div>
               <div class="col-1">
-                <div>🌞</div>
-                {/* <img id="icon" src="" /> */}
+                <img id="icon" src={img} />
               </div>
               <div class="col-2">
-                <div id="city">Odessa</div>
-                <div id="country">UA</div>
+                <div id="city">{correctcity}</div>
+                <div id="country">{country}</div>
                 <div id="date">21.08.2022</div>
                 <div id="today">Sunday</div>
               </div>
