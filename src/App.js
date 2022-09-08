@@ -12,10 +12,19 @@ function App(props) {
   let [correctcity, setCorrectcity] = useState(null);
   let [country, setCountry] = useState(null);
   let [icon, setIcon] = useState(null);
+  let [date, setDate] = useState(null);
 
   function getPosition() {
     navigator.geolocation.getCurrentPosition(currentPosition);
   }
+
+  // function searchDay() {
+  //   let newdate = date * 1000;
+  //   let day = newdate.getDay();
+  //   console.log(day);
+  //   let forecastDates = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  //   return forecastDates[day];
+  // }
 
   function currentPosition(position) {
     let lat = position.coords.latitude;
@@ -25,8 +34,10 @@ function App(props) {
       .then(showTemperature);
   }
 
-  function getCity(event) {
+  function GetCity(event) {
+    event.preventDefault();
     setCity(event.target.value);
+    // this.myRef = React.createRef(null);
   }
 
   if (!city) {
@@ -36,9 +47,11 @@ function App(props) {
   function searchWeather(event) {
     event.preventDefault();
   }
-
+  // let city1 = this.myRef.current;
+  // console.log(city1);
   function showTemperature(response) {
     console.log(response.data);
+
     setTemperature(response.data.main.temp);
     setDescription(response.data.weather[0].description);
     setHumidity(response.data.main.humidity);
@@ -46,6 +59,7 @@ function App(props) {
     setCorrectcity(response.data.name);
     setCountry(response.data.sys.country);
     setIcon(response.data.weather[0].icon);
+    setDate(response.data.dt);
   }
   let img = `http://openweathermap.org/img/wn/${icon}@2x.png`;
   let apiKey = "7ed20b3871d9e4f3837ef60fa128bf28";
@@ -56,6 +70,7 @@ function App(props) {
   axios
     .get(`${apiUrl}q=${city}&appid=${apiKey}&units=${units}`)
     .then(showTemperature);
+
   return (
     <div className="App">
       <div class="border m-5 p-5 rounded shadow p-3 mb-5 bg-body rounded">
@@ -73,12 +88,14 @@ function App(props) {
                 placeholder="Enter your city here"
                 aria-label="Search"
                 aria-describedby="basic-addon2"
-                onChange={getCity}
+                // ref={this.myRef}
+                onChange={GetCity}
               />
               <button
                 type="button"
                 class="btn btn-outline-primary"
                 id="button-search"
+                onClick={searchWeather}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -128,18 +145,20 @@ function App(props) {
             <div class="row">
               <div class="col-5" name="temp-today">
                 <div id="temper">{Math.round(temperature)}°C</div>
-                <div id="wind">Wind: {wind} m/s</div>
+                <div id="wind">Wind: {Math.round(wind)} m/s</div>
                 <div id="humidity">Humidity: {humidity} %</div>
                 <div id="description">Feeling: {description}</div>
               </div>
               <div class="col-1">
-                <img id="icon" src={img} />
+                <img id="icon" src={img} alt="" />
               </div>
               <div class="col-2">
                 <div id="city">{correctcity}</div>
                 <div id="country">{country}</div>
-                <div id="date">21.08.2022</div>
-                <div id="today">Sunday</div>
+                <div id="date">
+                  {new Date(date * 1000).toLocaleDateString("en-UK")}
+                </div>
+                {/* <div id="today">{searchDay(day.dt)}</div> */}
               </div>
             </div>
           </div>
