@@ -54,8 +54,7 @@ function App(props) {
   function searchWeather(event) {
     event.preventDefault();
   }
-  // let city1 = this.myRef.current;
-  // console.log(city1);
+
   function showTemperature(response) {
     console.log(response.data);
 
@@ -73,24 +72,6 @@ function App(props) {
   let apiKey = "7ed20b3871d9e4f3837ef60fa128bf28";
   let apiUrl = "https://api.openweathermap.org/data/2.5/weather?";
   let apiUrlForecast = "https://api.openweathermap.org/data/2.5/onecall?";
-  // let units = "metric";
-
-  // function click(event) {
-  //   let target = event.target;
-
-  //   switch (target.id) {
-  //     case "fahrenheit":
-  //       setUnits("imperial");
-  //       // search(city);
-
-  //       break;
-  //     case "celsius":
-  //       setUnits("metric");
-  //       // search(city);
-
-  //       break;
-  //   }
-  // }
 
   axios
     .get(`${apiUrl}q=${city}&appid=${apiKey}&units=${units}`)
@@ -113,7 +94,6 @@ function App(props) {
                 placeholder="Enter your city here"
                 aria-label="Search"
                 aria-describedby="basic-addon2"
-                // ref={this.myRef}
                 onChange={GetCity}
               />
               <button
@@ -146,15 +126,6 @@ function App(props) {
                 name="flexRadioDefault"
                 value="imperial"
                 checked={units === "imperial"}
-
-                // checked={(ev) => {
-                //   ev.preventDefault();
-                //   setUnits("imperial");
-                // }}
-                // onClick={(ev) => {
-                //   ev.preventDefault();
-                //   setUnits("imperial");
-                // }}
               />
               <label class="form-check-label" for="flexRadioDefault1">
                 {" "}
@@ -169,11 +140,6 @@ function App(props) {
                 name="flexRadioDefault"
                 value="metric"
                 checked={units === "metric"}
-
-                // checked={(ev) => {
-                //   ev.preventDefault();
-                //   setUnits("metric");
-                // }}
               />
               <label class="form-check-label" for="flexRadioDefault2">
                 {" "}
