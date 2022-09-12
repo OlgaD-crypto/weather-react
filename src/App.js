@@ -13,6 +13,13 @@ function App(props) {
   let [country, setCountry] = useState(null);
   let [icon, setIcon] = useState(null);
   let [date, setDate] = useState(null);
+  let [units, setUnits] = useState("metric");
+
+  function unitsValue(event) {
+    event.preventDefault();
+    console.log(event.target.value);
+    setUnits(event.target.value);
+  }
 
   function getPosition() {
     navigator.geolocation.getCurrentPosition(currentPosition);
@@ -60,12 +67,30 @@ function App(props) {
     setCountry(response.data.sys.country);
     setIcon(response.data.weather[0].icon);
     setDate(response.data.dt);
+    // click();
   }
   let img = `http://openweathermap.org/img/wn/${icon}@2x.png`;
   let apiKey = "7ed20b3871d9e4f3837ef60fa128bf28";
   let apiUrl = "https://api.openweathermap.org/data/2.5/weather?";
   let apiUrlForecast = "https://api.openweathermap.org/data/2.5/onecall?";
-  let units = "metric";
+  // let units = "metric";
+
+  // function click(event) {
+  //   let target = event.target;
+
+  //   switch (target.id) {
+  //     case "fahrenheit":
+  //       setUnits("imperial");
+  //       // search(city);
+
+  //       break;
+  //     case "celsius":
+  //       setUnits("metric");
+  //       // search(city);
+
+  //       break;
+  //   }
+  // }
 
   axios
     .get(`${apiUrl}q=${city}&appid=${apiKey}&units=${units}`)
@@ -112,13 +137,24 @@ function App(props) {
               {/* <!-- <button type="button" id="location">Get current location</button> --> */}
             </div>
           </div>
-          <div class="col-1 mx-5">
+          <div class="col-1 mx-5" onChange={unitsValue}>
             <div class="form-check">
               <input
                 class="form-check-input"
                 type="radio"
                 id="fahrenheit"
                 name="flexRadioDefault"
+                value="imperial"
+                checked={units === "imperial"}
+
+                // checked={(ev) => {
+                //   ev.preventDefault();
+                //   setUnits("imperial");
+                // }}
+                // onClick={(ev) => {
+                //   ev.preventDefault();
+                //   setUnits("imperial");
+                // }}
               />
               <label class="form-check-label" for="flexRadioDefault1">
                 {" "}
@@ -131,7 +167,13 @@ function App(props) {
                 type="radio"
                 id="celsius"
                 name="flexRadioDefault"
-                checked
+                value="metric"
+                checked={units === "metric"}
+
+                // checked={(ev) => {
+                //   ev.preventDefault();
+                //   setUnits("metric");
+                // }}
               />
               <label class="form-check-label" for="flexRadioDefault2">
                 {" "}
